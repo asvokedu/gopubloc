@@ -239,8 +239,8 @@ class SignalDetector:
         self.flask_app.add_url_rule('/api/close_order', 'close_order', self.close_order, methods=['POST'])
         # Konfigurasi Auto Close berdasarkan PnL
         self.flask_app.add_url_rule('/api/cancel_order', 'cancel_order', self.cancel_order, methods=['POST'])
-        self.AUTO_CLOSE_THRESHOLD_LOSS = -0.3  # USD
-        self.AUTOBOT_MIN_TARGET_PROFIT = 0.25   # 0.25% profit minimal
+        self.AUTO_CLOSE_THRESHOLD_LOSS = -0.2  # USD
+        self.AUTOBOT_MIN_TARGET_PROFIT = 0.15   # 0.25% profit minimal
         self.AUTOBOT_TRAILING_DISTANCE = 0.05   # 0.05% trailing distance
         self.autobot_trailing_stops = {}  # {order_id: {'max_profit': float, 'open_price': float}}
         self.auto_close_lock = threading.Lock()
@@ -381,7 +381,7 @@ class SignalDetector:
                 return False
 
         # --- Logika Perhitungan Kuantitas yang Diperbaiki ---
-        notional = 70.0  # Target notional 100 USDT
+        notional = 65.0  # Target notional 100 USDT
         initial_quantity = notional / mark_price
 
         min_qty = symbol_info.get('minQty', 0.0)
@@ -2770,10 +2770,10 @@ class SignalDetector:
                     'symbol': symbol,
                     'price_open': float(signal_info.get('price_open', 0.0)),  # Konversi ke float
                     # Posisi Sch: menggunakan data realtime
-                    'posisi_sch': f"{realtime_signal} / {realtime_score}",
+                    'posisi_sch': f"{recomendacion_id} / {score_id}",
                     # Posisi Sign: menggunakan data dari database (posisi + signal_score)
                     # PERBAIKAN: Format menjadi 'POSISI / SKOR' dan bulatkan skor
-                    'posisi_sign': f"{recomendacion_id} / {score_id}",
+                    'posisi_sign': f"{signal_info.get('posisi', 'HOLD')} / {int(round(float(signal_info.get('signal_score', 0))))}",
                     'last_price': last_price,
                     'mark_price': mark_price,
                     'liquidation_buy': float(liq.get('buy', 0)) * mark_price if mark_price else 0,
