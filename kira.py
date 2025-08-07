@@ -1706,13 +1706,13 @@ class SignalDetector:
                             score -= 4
                         
                         # 2. Volume Dominasi (Dengan Bobot Besar)
-                        if buy_ratio > 65: 
+                        if buy_ratio > 85: 
                             score += 3
-                        elif sell_ratio > 65:
+                        elif sell_ratio > 85:
                             score -= 3
-                        elif buy_ratio > 55:
+                        elif buy_ratio > 60:
                             score += 1
-                        elif sell_ratio > 55:
+                        elif sell_ratio > 60:
                             score -= 1
                         
                         # 3. Likuidasi Burst (Threshold Adaptif)
@@ -1720,18 +1720,18 @@ class SignalDetector:
                         liq_buy_usd = liq.get('buy', 0) * mark_price
                         
                         if liq_sell_usd > burst_threshold['burst_sell_threshold']:
-                            score -= 3  # Likuidasi sell besar -> bullish
+                            score += 3  # Likuidasi sell besar -> bullish
                         if liq_buy_usd > burst_threshold['burst_buy_threshold']:
-                            score += 3  # Likuidasi buy besar -> bearish
+                            score -= 3  # Likuidasi buy besar -> bearish
                         
                         # 4. Perbandingan dengan Candle Sebelumnya
                         prev_high = previous_candle_data.get('high', 0)
                         prev_low = previous_candle_data.get('low', float('inf'))
                         
                         if mark_price > prev_high:
-                            score += 2  # Breakout high
+                            score += 1  # Breakout high
                         elif mark_price < prev_low:
-                            score -= 2  # Breakdown low
+                            score -= 1  # Breakdown low
                         
                         # 5. Open Interest Change
                         if previous_oi_val > 0:
@@ -1768,16 +1768,16 @@ class SignalDetector:
                         signal = 'HOLD'
                         
                         # Aturan utama untuk scalping
-                        if score >= 7:
+                        if score >= 7 and liq_sell_usd > 1000:
                             signal = 'LONG'
                         elif score == 6:
                             # Konfirmasi tambahan untuk sinyal kuat
-                            if buy_ratio > 60 and liq_sell_usd > 1000:
+                            if buy_ratio > 80 and liq_sell_usd > 5000:
                                 signal = 'LONG'
-                        elif score <= -7:
+                        elif score <= -7 and liq_buy_usd > 1000:
                             signal = 'SHORT'
                         elif score == -6:
-                            if sell_ratio > 60 and liq_buy_usd > 1000:
+                            if sell_ratio > 80 and liq_buy_usd > 5000:
                                 signal = 'SHORT'
                                                              
                         # ===== END SISTEM SKORING =====
