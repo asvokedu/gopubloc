@@ -1760,15 +1760,15 @@ class SignalDetector:
                         signal = 'HOLD'
                         
                         # Aturan utama untuk scalping
-                        if score >= 8 and  buy_ratio > 75:
+                        if score >= 7:
                             signal = 'LONG'
-                        elif score == 7:
+                        elif score == 6:
                             # Konfirmasi tambahan untuk sinyal kuat
                             if buy_ratio > 85 and liq_sell_usd > 1000:
                                 signal = 'LONG'
-                        elif score <= -8 and sell_ratio > 75:
+                        elif score <= -7:
                             signal = 'SHORT'
-                        elif score == -7:
+                        elif score == -6:
                             if sell_ratio > 85 and liq_buy_usd > 1000:
                                 signal = 'SHORT'
                                                              
