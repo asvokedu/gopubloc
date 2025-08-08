@@ -109,8 +109,8 @@ class SignalDetector:
         self.symbols: List[str] = []
         self.valid_symbols: Set[str] = set()
         self.shutdown_event = threading.Event()
-        self.SIGNAL_DETECTION_INTERVAL = 3  # Dalam detik
-        self.AUTOBOT_TRAILING_INTERVAL = 1
+        self.SIGNAL_DETECTION_INTERVAL = 2  # Dalam detik
+        self.AUTOBOT_TRAILING_INTERVAL = 2
         self.data_lock = threading.Lock()
         self.symbol_info_cache: Dict[str, Dict] = {}  # Cache untuk info simbol
 
@@ -166,7 +166,7 @@ class SignalDetector:
             logger=False,  # Nonaktifkan logger Socket.IO
             engineio_logger=False,  # Nonaktifkan engineio logger
             max_http_buffer_size=50 * 1024 * 1024,  # 50MB (ditingkatkan)
-            ping_interval=60,  # Ditingkatkan
+            ping_interval=30,  # Ditingkatkan
             ping_timeout=120,   # Ditingkatkan
             compression_threshold=1024,  # Kompresi untuk payload besar
             json=json  # Gunakan JSON encoder kustom
@@ -232,7 +232,7 @@ class SignalDetector:
         # Cache untuk saldo akun
         self.account_balance_cache: Dict[str, float] = {}
         self.balance_cache_time = 0
-        self.balance_refresh_interval = 60  # 1 menit
+        self.balance_refresh_interval = 30  # 1 menit
 
         self.open_orders_cache = None  # Cache untuk data open orders
         self.open_orders_last_updated = 0  # Timestamp terakhir update
