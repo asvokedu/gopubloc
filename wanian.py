@@ -432,7 +432,7 @@ class SignalDetector:
 
         # Set leverage
         try:
-            self._set_leverage(symbol, 100)
+            self._set_leverage(symbol, 50)
         except Exception as e:
             logger.error(f"Autobot [{symbol}]: Gagal mengatur leverage: {e}")
             return False
@@ -1778,13 +1778,13 @@ class SignalDetector:
                         signal = 'HOLD'
 
                         # Aturan utama untuk scalping
-                        if score >= 8 and liq_sell_usd > 500:
+                        if score >= 8 and liq_sell_usd > 0:
                             signal = 'LONG'
                         elif score == 7:
                             # Konfirmasi tambahan untuk sinyal kuat
                             if buy_ratio > 65 and liq_sell_usd > 1000:
                                 signal = 'LONG'
-                        elif score <= -8 and liq_buy_usd > 500:
+                        elif score <= -8 and liq_buy_usd > 0:
                             signal = 'SHORT'
                         elif score == -7:
                             if sell_ratio > 65 and liq_buy_usd > 1000:
