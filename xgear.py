@@ -240,8 +240,8 @@ class SignalDetector:
         self.flask_app.add_url_rule('/api/close_order', 'close_order', self.close_order, methods=['POST'])
         # Konfigurasi Auto Close berdasarkan PnL
         self.flask_app.add_url_rule('/api/cancel_order', 'cancel_order', self.cancel_order, methods=['POST'])
-        self.AUTO_CLOSE_THRESHOLD_LOSS = -0.15  # USD
-        self.AUTOBOT_MIN_TARGET_PROFIT = 0.12   # 0.25% profit minimal
+        self.AUTO_CLOSE_THRESHOLD_LOSS = -0.40  # USD
+        self.AUTOBOT_MIN_TARGET_PROFIT = 0.15   # 0.25% profit minimal
         self.AUTOBOT_TRAILING_DISTANCE = 0.05   # 0.05% trailing distance
         self.autobot_trailing_stops = {}  # {order_id: {'max_profit': float, 'open_price': float}}
         self.auto_close_lock = threading.Lock()
